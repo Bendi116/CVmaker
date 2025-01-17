@@ -1,3 +1,4 @@
+import { use } from "react";
 import { useState } from "react";
 
 export function Editor({ name, onChange, toggleCvViewer }) {
@@ -152,57 +153,166 @@ function WorkExperience() {
   );
 }
 
+function LangEl({ uuid, value, onChange, removeLang }) {
+  console.log(uuid);
+  return (
+    <li key={uuid}>
+      <input type="text" value={value} onChange={onChange} />
+      <button onClick={removeLang}></button>
+    </li>
+  );
+}
+
 function Languages() {
   const [languages, setLanguages] = useState([
     { lang: "English", id: self.crypto.randomUUID() },
   ]);
   const languagesList = languages.map((lang) => (
-    <li key={lang.id}>
-      <input value={lang.lang} />
-    </li>
+    <LangEl
+      uuid={lang.id}
+      value={lang.lang}
+      onChange={(e) => {
+        setLanguages(
+          languages.map((l) => {
+            return l.id == lang.id ? { lang: e.target.value, id: lang.id } : l;
+          }),
+        );
+      }}
+      removeLang={() => {
+        setLanguages(languages.filter((l) => l.id != lang.id));
+      }}
+    />
   ));
-  console.log(languagesList);
+
   return (
     <div>
       <h2>Languages</h2>
       <ul>{languagesList}</ul>
+      <button
+        onClick={() => {
+          setLanguages([
+            ...languages,
+            { lang: "", id: self.crypto.randomUUID() },
+          ]);
+        }}
+      >
+        Add
+      </button>
     </div>
   );
 }
 
+function ExpertiseEl({ value, onChange, removeExper }) {
+  return (
+    <li>
+      <input type="text" value={value} onChange={onChange} />
+      <button onClick={removeExper}></button>
+    </li>
+  );
+}
+
 function Expertise() {
+  const [expertises, setExpertises] = useState([
+    { value: "example", id: self.crypto.randomUUID() },
+  ]);
+  const expertisesList = expertises.map((exper) => {
+    return (
+      <ExpertiseEl
+        key={exper.id}
+        value={exper.value}
+        onChange={(e) => {
+          setExpertises(
+            expertises.map((_exper) => {
+              return _exper.id == exper.id
+                ? { value: e.target.value, id: exper.id }
+                : _exper;
+            }),
+          );
+        }}
+        removeExper={() => {
+          setExpertises(expertises.filter((_exper) => _exper.id != exper.id));
+        }}
+      />
+    );
+  });
+
   return (
     <div>
       <h2>Expertise:</h2>
-      <ul>
-        <li>
-          <input type="text" />
-        </li>
-        <li>
-          <input type="text" />
-        </li>
-      </ul>
+      <ul>{expertisesList}</ul>
+      <button
+        onClick={() => {
+          setExpertises([
+            ...expertises,
+            { value: "", id: self.crypto.randomUUID() },
+          ]);
+        }}
+      >
+        Add
+      </button>
+    </div>
+  );
+}
+
+function EducationEl({ name, removeEdu }) {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div>
+      <button onClick={() => setShow(!show)}>{show ? "Hide" : "Show"}</button>
+      <button onClick={removeEdu}>Delete</button>
+
+      <div style={{ display: show ? "block" : "none" }}>
+        {name}
+        <label>
+          Name: <input type="text" />
+        </label>
+        <label>
+          Institue: <input type="text" />
+        </label>
+        <label>
+          From: <input type="num" />
+        </label>
+        <label>
+          To: <input type="num" />
+        </label>
+      </div>
     </div>
   );
 }
 
 function Education() {
+  const [educations, setEducations] = useState([
+    { name: "example", id: self.crypto.randomUUID() },
+  ]);
+  const educationsList = educations.map((edu) => {
+    return (
+      <EducationEl
+        key={edu.id}
+        name={edu.name}
+        removeEdu={() => {
+          setEducations(educations.filter((_edu) => _edu.id != edu.id));
+        }}
+      />
+    );
+  });
+
   return (
-    <div>
+    <>
       <h2>Education:</h2>
-      <label>
-        Name: <input type="text" />
-      </label>
-      <label>
-        Institue: <input type="text" />
-      </label>
-      <label>
-        From: <input type="num" />
-      </label>
-      <label>
-        To: <input type="num" />
-      </label>
-    </div>
+      <ul> {educationsList}</ul>
+      <button
+        className="addNewEdu"
+        onClick={() =>
+          setEducations([
+            ...educations,
+            { name: "newExample", id: self.crypto.randomUUID() },
+          ])
+        }
+      >
+        Add new Education
+      </button>
+    </>
   );
 }
 
