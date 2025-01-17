@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  padding: 0;
+  /*overflow: hidden;*/
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100vw;
+}
+.editor,
+.viewer {
+  border: 2px red solid;
+  padding: 10rem;
+}
+
+.viewer {
+  display: block;
+}
+
+button {
+  color: red;
+}
+
+/*
+
+.main-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.test{
+    border: 1px solid red;
+    overflow-y:scroll;
+    height: 100vh;
+}
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #101010;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #da6d6d;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ff7676;
+  }
+  */
