@@ -1,28 +1,27 @@
-import { use } from "react";
 import { useState } from "react";
 
-export function Editor({ name, onChange, toggleCvViewer }) {
+export function Editor({profile, contact,companies,setCompanies,educations,setEducations, toggleCvViewer }) {
   const [editorIndex, setEditorIndex] = useState(0);
   let editorPage;
 
   switch (editorIndex) {
     case 0:
-      editorPage = <Profile />;
+      editorPage = <Profile profile={profile}/>;
       break;
     case 1:
-      editorPage = <Contact />;
+      editorPage = <Contact contact={contact}/>;
       break;
     case 2:
-      editorPage = <WorkExperience />;
+      editorPage = <LargeEditComponent componentTitle="Working Experiences" componentType="work" valuesDict={companies} setValuesDict={setCompanies}/>;
       break;
     case 3:
-      editorPage = <Education />;
+      editorPage = <LargeEditComponent componentTitle="Educations" componentType="education" valuesDict={educations} setValuesDict={setEducations}/>;
       break;
     case 4:
-      editorPage = <Expertise />;
+      editorPage = <SmallEditComponent componentTitle="Experitses: "/>;
       break;
     case 5:
-      editorPage = <Languages />;
+      editorPage = <SmallEditComponent componentTitle="Languages: "/>;
       break;
   }
 
@@ -36,12 +35,7 @@ export function Editor({ name, onChange, toggleCvViewer }) {
       )}
       <hr />
 
-      <input
-        type="text"
-        placeholder="Your Name"
-        value={name}
-        onChange={onChange}
-      />
+  
       {editorPage}
       <hr />
       <button onClick={toggleCvViewer}>Toggle VC Viewer</button>
@@ -49,21 +43,21 @@ export function Editor({ name, onChange, toggleCvViewer }) {
   );
 }
 
-function Profile() {
+function Profile({profile}) {
   return (
     <div>
       <h2>Profile Infos</h2>
       <label>
-        First Name: <input type="text" className="firstName" />
+        First Name: <input type="text" className="firstName" value={profile.firstName} onChange={(e)=>profile.setFirstName(e.target.value)}/>
       </label>
       <label>
-        Last Name: <input type="text" className="lastName" />
+        Last Name: <input type="text" className="lastName" value={profile.lastName} onChange={(e)=>profile.setLastName(e.target.value)} />
       </label>
       <label>
-        Job Title: <input type="text" className="jobTitle" />
+        Job Title: <input type="text" className="jobTitle"  value={profile.jobTitle} onChange={(e)=>profile.setJobTitle(e.target.value)}/>
       </label>
       <label>
-        Your profile description: <textarea maxLength="200"></textarea>
+        Your profile description: <textarea maxLength="200"  value={profile.description} onChange={(e)=>profile.setDescription(e.target.value)}></textarea>
       </label>
       <label>
         Profile picture: <input type="file" />
@@ -72,248 +66,160 @@ function Profile() {
   );
 }
 
-function Contact() {
+function Contact({contact}) {
   return (
     <div>
       <h2>Contact Infos</h2>
       <label>
-        Email: <input type="email" />
+        Email: <input type="email" value={contact.email} onChange={(e)=>contact.setEmail(e.target.value)} />
       </label>
       <label>
-        Phone: <input type="tel" />
+        Phone: <input type="tel"  value={contact.tel} onChange={(e)=>contact.setTel(e.target.value)}/>
       </label>
       <label>
-        Website: <input type="text" />
+        Website: <input type="text" value={contact.website} onChange={(e)=>contact.setWebsite(e.target.value)}/>
       </label>
       <label>
-        Address: <input type="text" />
+        Address: <input type="text" value={contact.address} onChange={(e)=>contact.setAddress(e.target.value)}/>
       </label>
     </div>
   );
 }
 
-function Job({ name, removeJob }) {
-  const [show, setShow] = useState(false);
+
+function SmallComponentElement({value,onChange,removeElement}){
+  return (
+    <li >
+      <input type="text"  value={value} onChange={onChange}/>
+      <button onClick={removeElement}></button>
+    </li>
+  )
+}
+
+function SmallEditComponent({componentTitle}){
+  const[values,setValues] = useState([
+    {name: "example",id:self.crypto.randomUUID()}
+  ])
+
+  const valuesList = values.map(val=>(
+    <SmallComponentElement 
+    key={val.id}
+    value={val.name}
+    onChange={e=>{
+      setValues(values.map(_val=> _val.id==val.id? {name:e.target.value,id:self.crypto.randomUUID()}:_val)
+    )
+    }
+    }
+    removeElement={()=>setValues( values.filter(_val=>_val.id!=val.id))
+     }
+
+    
+    />
+  ))
+
+
+  return(<div>
+    <h2>{componentTitle}</h2>
+    <ul>
+        {valuesList}
+    </ul>
+    <button
+        onClick={() => {
+          setValues([
+            ...values,
+            { name: "", id: self.crypto.randomUUID() },
+          ]);
+        }}
+      >
+        Add
+      </button>
+    </div>
+  )
+}
+
+function LargeComponentElement({ name, removeValue, componentType ,values,setValues}){
+  const [show, setShow] = useState(true);
+  
+  let element;
+  if(componentType=="work"){
+    element=(<> <label>
+      Company Name: <input type="text" value={values.name } onChange={e=>setValues({...values,name: e.target.value})}/>
+    </label>
+    <label>
+      Job Title: <input type="text" value={values.title} onChange={e=>setValues({...values,title: e.target.value})} />
+    </label>
+    <label>
+      From: <input type="number" value={values.from } onChange={e=>setValues({...values,from: e.target.value})}/>
+    </label>
+    <label>
+      To: <input type="number" value={values.to } onChange={e=>setValues({...values,to: e.target.value})}/>
+    </label>
+    <ul>
+      Main tasks:
+      {values.tasks.map(task=><li key={task.id}> <input type="text" value={task.name} onChange={(e)=>setValues({...values,tasks:values.tasks.map(t=>t.id==task.id?{name:e.target.value,id:task.id}:t)})}/>
+      <button onClick={()=>setValues({...values,tasks:values.tasks.filter(t=>t.id !=task.id)})}>X</button>
+
+      </li>)}
+      <button onClick={()=>setValues({...values,tasks:[...values.tasks,{name:"new one",id:self.crypto.randomUUID()}]})}>Add task</button> 
+    </ul> </>)
+    
+  }else if(componentType=="education"){
+
+      element=(<>
+       <label>
+          Name: <input type="text" value={values.name} onChange={e=>setValues({...values,name:e.target.value})}/>
+        </label>
+        <label>
+          Institute: <input type="text" value={values.insitute} onChange={e=>setValues({...values,name:e.target.value})}/>
+        </label>
+        <label>
+          From: <input type="num" value={values.from} onChange={e=>setValues({...values,from:e.target.value})}/>
+        </label>
+        <label>
+          To: <input type="num" value={values.to} onChange={e=>setValues({...values,to:e.target.value})}/>
+        </label>
+      </>)
+    
+  }
 
   return (
     <li>
       <button onClick={() => setShow(!show)}>{show ? "Hide" : "Show"}</button>
-      <button onClick={removeJob}>Delete</button>
+      <button onClick={removeValue}>Delete</button>
       <div style={{ display: show ? "block" : "none" }}>
         <h3>{name}</h3>
-        <label>
-          Company Name: <input type="text" />
-        </label>
-        <label>
-          Job Title: <input type="text" />
-        </label>
-        <label>
-          From: <input type="number" />
-        </label>
-        <label>
-          To: <input type="number" />
-        </label>
-        <ul>
-          Main tasks:
-          <li>
-            <input type="text" />
-          </li>
-        </ul>
+        {element}       
       </div>
     </li>
   );
 }
 
-function WorkExperience() {
-  const [jobs, setJobs] = useState([
-    { name: "example", id: self.crypto.randomUUID() },
-  ]);
-  const jobsList = jobs.map((job) => (
-    <Job
-      name={job.name}
-      key={job.id}
-      removeJob={() => setJobs(jobs.filter((j) => j.id != job.id))}
-    />
-  ));
+function LargeEditComponent({componentTitle,componentType,valuesDict,setValuesDict}){
+  const valuesList = valuesDict.map((val) => (
+    <LargeComponentElement
+    componentType={componentType}
+      name={val.name}
+      key={val.id}
+      values={val}
+      setValues={(newValue)=>setValuesDict(valuesDict.map(_val=>_val.id == val.id ? newValue : _val))}
+      removeValue={() => setValuesDict(valuesDict.filter((_val) => _val.id != val.id))}
+    />  ));
+
 
   return (
     <div>
-      <h2>Work Experience</h2>
-      <ul>{jobsList}</ul>
+      <h2>{componentTitle}</h2>
+      <ul>{valuesList}</ul>
       <button
-        className="addNewJob"
         onClick={() =>
-          setJobs([
-            ...jobs,
-            { name: "newExample", id: self.crypto.randomUUID() },
+          setValuesDict([
+            ...valuesDict,
+            {name:"",title:"",from:"",to:"",tasks:["example1"],id: self.crypto.randomUUID()}
           ])
         }
-      ></button>
+      >Add(not working!)</button>
     </div>
   );
 }
 
-function LangEl({ uuid, value, onChange, removeLang }) {
-  console.log(uuid);
-  return (
-    <li key={uuid}>
-      <input type="text" value={value} onChange={onChange} />
-      <button onClick={removeLang}></button>
-    </li>
-  );
-}
 
-function Languages() {
-  const [languages, setLanguages] = useState([
-    { lang: "English", id: self.crypto.randomUUID() },
-  ]);
-  const languagesList = languages.map((lang) => (
-    <LangEl
-      uuid={lang.id}
-      value={lang.lang}
-      onChange={(e) => {
-        setLanguages(
-          languages.map((l) => {
-            return l.id == lang.id ? { lang: e.target.value, id: lang.id } : l;
-          }),
-        );
-      }}
-      removeLang={() => {
-        setLanguages(languages.filter((l) => l.id != lang.id));
-      }}
-    />
-  ));
-
-  return (
-    <div>
-      <h2>Languages</h2>
-      <ul>{languagesList}</ul>
-      <button
-        onClick={() => {
-          setLanguages([
-            ...languages,
-            { lang: "", id: self.crypto.randomUUID() },
-          ]);
-        }}
-      >
-        Add
-      </button>
-    </div>
-  );
-}
-
-function ExpertiseEl({ value, onChange, removeExper }) {
-  return (
-    <li>
-      <input type="text" value={value} onChange={onChange} />
-      <button onClick={removeExper}></button>
-    </li>
-  );
-}
-
-function Expertise() {
-  const [expertises, setExpertises] = useState([
-    { value: "example", id: self.crypto.randomUUID() },
-  ]);
-  const expertisesList = expertises.map((exper) => {
-    return (
-      <ExpertiseEl
-        key={exper.id}
-        value={exper.value}
-        onChange={(e) => {
-          setExpertises(
-            expertises.map((_exper) => {
-              return _exper.id == exper.id
-                ? { value: e.target.value, id: exper.id }
-                : _exper;
-            }),
-          );
-        }}
-        removeExper={() => {
-          setExpertises(expertises.filter((_exper) => _exper.id != exper.id));
-        }}
-      />
-    );
-  });
-
-  return (
-    <div>
-      <h2>Expertise:</h2>
-      <ul>{expertisesList}</ul>
-      <button
-        onClick={() => {
-          setExpertises([
-            ...expertises,
-            { value: "", id: self.crypto.randomUUID() },
-          ]);
-        }}
-      >
-        Add
-      </button>
-    </div>
-  );
-}
-
-function EducationEl({ name, removeEdu }) {
-  const [show, setShow] = useState(false);
-
-  return (
-    <div>
-      <button onClick={() => setShow(!show)}>{show ? "Hide" : "Show"}</button>
-      <button onClick={removeEdu}>Delete</button>
-
-      <div style={{ display: show ? "block" : "none" }}>
-        {name}
-        <label>
-          Name: <input type="text" />
-        </label>
-        <label>
-          Institue: <input type="text" />
-        </label>
-        <label>
-          From: <input type="num" />
-        </label>
-        <label>
-          To: <input type="num" />
-        </label>
-      </div>
-    </div>
-  );
-}
-
-function Education() {
-  const [educations, setEducations] = useState([
-    { name: "example", id: self.crypto.randomUUID() },
-  ]);
-  const educationsList = educations.map((edu) => {
-    return (
-      <EducationEl
-        key={edu.id}
-        name={edu.name}
-        removeEdu={() => {
-          setEducations(educations.filter((_edu) => _edu.id != edu.id));
-        }}
-      />
-    );
-  });
-
-  return (
-    <>
-      <h2>Education:</h2>
-      <ul> {educationsList}</ul>
-      <button
-        className="addNewEdu"
-        onClick={() =>
-          setEducations([
-            ...educations,
-            { name: "newExample", id: self.crypto.randomUUID() },
-          ])
-        }
-      >
-        Add new Education
-      </button>
-    </>
-  );
-}
-
-//language, expertise, education, main proifle image
