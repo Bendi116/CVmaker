@@ -4,37 +4,64 @@ import { Viewer } from "./Viewer";
 
 export function App() {
   const [viewerVisible, setViewerVisible] = useState(true);
-  const [companies,setCompanies] = useState([{name:"",title:"",from:"",to:"",tasks:[{name:"example1",id:self.crypto.randomUUID()},{name:"example2",id:self.crypto.randomUUID()}],id: self.crypto.randomUUID()}])
-  const [educations, setEducations] = useState([{name:"",institute:"",from:"",to:"",id: self.crypto.randomUUID()}])
-  /*const [Languages,setLanguages] = useState(["English"])*/
-  
-  const profile = profileDict()
-  const contact = contactDict()
+  const [companies, setCompanies] = useState([
+    {
+      name: "",
+      title: "",
+      from: "",
+      to: "",
+      tasks: [
+        { name: "example1", id: self.crypto.randomUUID() },
+        { name: "example2", id: self.crypto.randomUUID() },
+      ],
+      id: self.crypto.randomUUID(),
+    },
+  ]);
+  const [educations, setEducations] = useState([
+    { name: "", institute: "", from: "", to: "", id: self.crypto.randomUUID() },
+  ])
+  const [languages,setLanguages] = useState([{name:"English",id: self.crypto.randomUUID()}])
+  /* [expertise,setExpertise] = useState([{name:"Communication",id: self.crypto.randomUUID()}])
+  expertise={expertise}
+        setExpertise={setExpertise}
+  */
+
+
+  const profile = profileDict();
+  const contact = contactDict();
   return (
     <main style={{ gridTemplateColumns: viewerVisible ? "1fr 1fr" : "1fr" }}>
       <Editor
-      contact={contact}
-      profile={profile}
+        contact={contact}
+        profile={profile}
         toggleCvViewer={() => setViewerVisible(!viewerVisible)}
         companies={companies}
         setCompanies={setCompanies}
         educations={educations}
         setEducations={setEducations}
+        languages={languages}
+        setLanguages={setLanguages}
+        
       ></Editor>
-      <Viewer contact={contact} profile={profile} companies={companies}  educations={educations}
- isVisible={viewerVisible}></Viewer>
+      <Viewer
+        contact={contact}
+        profile={profile}
+        companies={companies}
+        educations={educations}
+        isVisible={viewerVisible}
+        languages={languages}
+      ></Viewer>
     </main>
   );
 }
 
-
-function profileDict(){
+function profileDict() {
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Dee");
   const [jobTitle, setJobTitle] = useState("");
   const [description, setDescription] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
-  return{
+  return {
     firstName,
     setFirstName,
     lastName,
@@ -44,8 +71,8 @@ function profileDict(){
     description,
     setDescription,
     profilePicture,
-    setProfilePicture
-  }
+    setProfilePicture,
+  };
 }
 
 function contactDict() {
@@ -54,7 +81,7 @@ function contactDict() {
   const [website, setWebsite] = useState("");
   const [address, setAddress] = useState("");
 
-  return{
+  return {
     email,
     setEmail,
     tel,
@@ -62,34 +89,7 @@ function contactDict() {
     website,
     setWebsite,
     address,
-    setAddress
-  }
+    setAddress,
+  };
 }
 
-
-
-function companyDict(){
-  const [name, setName] = useState("example");
-  const [title, setTitle] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [tasks,setTasks] = useState(["example task"])
-
-  const handleNameChange = event => setName(event.target.value)
-
-  return (
-    {
-      name,
-      setName,
-      handleNameChange,
-      title,
-      setTitle,
-      from,
-      setFrom,
-      to,
-      setTo,
-      tasks,
-      setTasks
-    }
-  )
-}
