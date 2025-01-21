@@ -1,12 +1,20 @@
-export function Viewer({ profile, contact, isVisible, companies, educations,languages }) {
+export function Viewer({
+  profile,
+  contact,
+  isVisible,
+  companies,
+  educations,
+  languages,
+  expertise,
+}) {
   return (
     <div className="viewer" style={{ display: isVisible ? "block" : "none" }}>
       <Profile profile={profile}></Profile>
       <Contact contact={contact}></Contact>
       <Companies companies={companies}></Companies>
       <Educations educations={educations} />
-      <Languages languages={languages}></Languages>
-
+      <SmallValueList name="Expertise" values={expertise}></SmallValueList>
+      <SmallValueList name="Languages" values={languages}></SmallValueList>
     </div>
   );
 }
@@ -94,15 +102,15 @@ function Companies({ companies }) {
   );
 }
 
-
-
-function Languages({languages}){
-  return(
+function SmallValueList({ name, values }) {
+  return (
     <>
-    <h2>Languages</h2>
-    <ul>
-      {languages.map(lang=> <li key={lang.id}>{lang.name}</li>)}
-    </ul>
+      <h2>{name}</h2>
+      <ul>
+        {values.map((val) => (
+          <li key={val.id}> {val.name}</li>
+        ))}
+      </ul>
     </>
-  )
+  );
 }

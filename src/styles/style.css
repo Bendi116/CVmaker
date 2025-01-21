@@ -1,53 +1,44 @@
 body {
   margin: 0;
   padding: 0;
-  /*overflow: hidden;*/
+  overflow: hidden;
 }
 
 main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 100vw;
-}
-.editor,
-.viewer {
-  border: 2px red solid;
-  padding: 10rem;
-}
-
-.viewer {
-  display: block;
+  color: rgb(233, 205, 196);
 }
 
 button {
-  color: red;
+  color: rgb(169, 42, 42);
 }
 
-/*
-
-.main-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.editor,
+.viewer {
+  padding: 10rem;
+  overflow-y: scroll;
+  height: 60vh;
 }
 
-.test{
-    border: 1px solid red;
-    overflow-y:scroll;
-    height: 100vh;
+.navButtonContainer {
+  display: flex;
+  justify-content: space-between;
 }
+
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: #101010;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #da6d6d;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #ff7676;
-  }
-  */
+  width: 5.5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #101010;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #da6d6d;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cf76ff;
+}

@@ -19,13 +19,13 @@ export function App() {
   ]);
   const [educations, setEducations] = useState([
     { name: "", institute: "", from: "", to: "", id: self.crypto.randomUUID() },
-  ])
-  const [languages,setLanguages] = useState([{name:"English",id: self.crypto.randomUUID()}])
-  /* [expertise,setExpertise] = useState([{name:"Communication",id: self.crypto.randomUUID()}])
-  expertise={expertise}
-        setExpertise={setExpertise}
-  */
-
+  ]);
+  const [languages, setLanguages] = useState([
+    { name: "English", id: self.crypto.randomUUID() },
+  ]);
+  const [expertise, setExpertise] = useState([
+    { name: "Communication", id: self.crypto.randomUUID() },
+  ]);
 
   const profile = profileDict();
   const contact = contactDict();
@@ -41,7 +41,8 @@ export function App() {
         setEducations={setEducations}
         languages={languages}
         setLanguages={setLanguages}
-        
+        expertise={expertise}
+        setExpertise={setExpertise}
       ></Editor>
       <Viewer
         contact={contact}
@@ -50,6 +51,7 @@ export function App() {
         educations={educations}
         isVisible={viewerVisible}
         languages={languages}
+        expertise={expertise}
       ></Viewer>
     </main>
   );
@@ -92,4 +94,3 @@ function contactDict() {
     setAddress,
   };
 }
-

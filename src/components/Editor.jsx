@@ -10,7 +10,8 @@ export function Editor({
   toggleCvViewer,
   languages,
   setLanguages,
-  
+  expertise,
+  setExpertise,
 }) {
   const [editorIndex, setEditorIndex] = useState(0);
   let editorPage;
@@ -43,26 +44,56 @@ export function Editor({
       );
       break;
     case 4:
-      editorPage = <SmallEditComponent componentTitle="Experitses: " values={languages} setValues={setLanguages}/>;
+      editorPage = (
+        <SmallEditComponent
+          componentTitle="Experitses: "
+          values={expertise}
+          setValues={setExpertise}
+        />
+      );
       break;
     case 5:
-      editorPage = <SmallEditComponent componentTitle="Languages: " values={languages} setValues={setLanguages}/>;
+      editorPage = (
+        <SmallEditComponent
+          componentTitle="Languages: "
+          values={languages}
+          setValues={setLanguages}
+        />
+      );
       break;
   }
 
   return (
     <div className="editor">
-      {editorIndex >= 1 && (
-        <button onClick={() => setEditorIndex(editorIndex - 1)}>Prev</button>
-      )}
-      {editorIndex <= 4 && (
-        <button onClick={() => setEditorIndex(editorIndex + 1)}>Next</button>
-      )}
+      <div className="navButtonContainer">
+        {
+          <button
+            style={{ visibility: editorIndex >= 1 ? "visible" : "hidden" }}
+            onClick={() => setEditorIndex(editorIndex - 1)}
+          >
+            Prev
+          </button>
+        }
+        {
+          <button
+            style={{ visibility: editorIndex <= 4 ? "visible" : "hidden" }}
+            onClick={() => setEditorIndex(editorIndex + 1)}
+          >
+            Next
+          </button>
+        }
+      </div>
+
       <hr />
 
       {editorPage}
       <hr />
       <button onClick={toggleCvViewer}>Toggle VC Viewer</button>
+      <NavBar
+        jumpToIndex={(index) => {
+          setEditorIndex(index);
+        }}
+      ></NavBar>
     </div>
   );
 }
@@ -155,26 +186,24 @@ function Contact({ contact }) {
 
 function SmallComponentElement({ value, setValue, removeElement }) {
   return (
-    <li key={value.uuid}>
-      <input type="text" value={value.value} onChange={(e)=>setValue(e)} />
+    <li key={value.id}>
+      <input type="text" value={value.name} onChange={(e) => setValue(e)} />
       <button onClick={removeElement}></button>
     </li>
   );
 }
 
-function SmallEditComponent({ componentTitle ,values,setValues}) {
+function SmallEditComponent({ componentTitle, values, setValues }) {
   const valuesList = values.map((val) => (
     <SmallComponentElement
-     
       value={val}
-      setValue={((e)=>{setValues(
-        values.map((_val) =>
-          _val.id == val.id
-            ? { name: e.target.value, id: self.crypto.randomUUID() }
-            : _val,
-        ),
-      );})}
-      
+      setValue={(e) => {
+        setValues(
+          values.map((_val) =>
+            _val.id == val.id ? { name: e.target.value, id: val.id } : _val,
+          ),
+        );
+      }}
       removeElement={() =>
         setValues(values.filter((_val) => _val.id != val.id))
       }
@@ -305,7 +334,7 @@ function LargeComponentElement({
           <input
             type="text"
             value={values.insitute}
-            onChange={(e) => setValues({ ...values, name: e.target.value })}
+            onChange={(e) => setValues({ ...values, insitute: e.target.value })}
           />
         </label>
         <label>
@@ -385,5 +414,33 @@ function LargeEditComponent({
         Add(not working!)
       </button>
     </div>
+  );
+}
+
+function NavBar({ jumpToIndex }) {
+  return (
+    <nav>
+      <ul>
+        <li>
+          {" "}
+          <button onClick={() => jumpToIndex(0)}>Profile</button>{" "}
+        </li>
+        <li>
+          <button onClick={() => jumpToIndex(1)}>Contact</button>
+        </li>
+        <li>
+          <button onClick={() => jumpToIndex(2)}>Working Experience</button>
+        </li>
+        <li>
+          <button onClick={() => jumpToIndex(3)}>Educations</button>
+        </li>
+        <li>
+          <button onClick={() => jumpToIndex(4)}>Experise</button>
+        </li>
+        <li>
+          <button onClick={() => jumpToIndex(5)}>Languages</button>
+        </li>
+      </ul>
+    </nav>
   );
 }
