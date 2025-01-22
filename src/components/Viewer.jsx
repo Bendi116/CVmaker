@@ -9,12 +9,21 @@ export function Viewer({
 }) {
   return (
     <div className="viewer" style={{ display: isVisible ? "block" : "none" }}>
-      <Profile profile={profile}></Profile>
-      <Contact contact={contact}></Contact>
-      <Companies companies={companies}></Companies>
-      <Educations educations={educations} />
-      <SmallValueList name="Expertise" values={expertise}></SmallValueList>
-      <SmallValueList name="Languages" values={languages}></SmallValueList>
+     <div className="CvContainer"> <div className="sideViewerContent">
+   
+   <Contact contact={contact}></Contact>
+   <Educations educations={educations} />
+   <SmallValueList name="Expertise" values={expertise}></SmallValueList>
+   <SmallValueList name="Languages" values={languages}></SmallValueList>
+   </div>
+     
+      <div className="mainViewerContent">
+        <Profile profile={profile}></Profile>
+        <Companies companies={companies}></Companies>
+      </div>
+     </div>
+    
+  
     </div>
   );
 }
@@ -23,12 +32,11 @@ function Profile({ profile }) {
   return (
     <div className="profile">
       <ul>
-        <li> First name: {profile.firstName}</li>
-        <li> Last name: {profile.lastName}</li>
-        <li> Job title: {profile.jobTitle}</li>
-        <li> Description: {profile.description}</li>
+        <h1>{profile.firstName+" "+profile.lastName}</h1>
+        <div className="profileTitle">{profile.jobTitle}</div>
+        <li> Profile: {profile.description}</li>
 
-        <li> Profile Picture: {profile.profilePicture}</li>
+    
       </ul>
     </div>
   );
@@ -50,7 +58,7 @@ function Contact({ contact }) {
 function Education({ education }) {
   return (
     <div className="company">
-      {education.name}
+      <h3>{education.name}</h3>
       <ul>
         <li>Institute: {education.institute}</li>
         <li>From: {education.from}</li>
@@ -76,12 +84,12 @@ function Educations({ educations }) {
 function Company({ company }) {
   return (
     <div className="company">
-      {company.name}
+      <h3>{company.name}</h3>
       <ul>
         <li>Title: {company.title}</li>
         <li>From: {company.from}</li>
         <li>To: {company.to}</li>
-        <ul>
+        <ul className="taskList">
           {company.tasks.map((task) => (
             <li key={task.id}>{task.name}</li>
           ))}

@@ -62,7 +62,6 @@ function profileDict() {
   const [lastName, setLastName] = useState("Dee");
   const [jobTitle, setJobTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [profilePicture, setProfilePicture] = useState("");
   return {
     firstName,
     setFirstName,
@@ -72,8 +71,7 @@ function profileDict() {
     setJobTitle,
     description,
     setDescription,
-    profilePicture,
-    setProfilePicture,
+
   };
 }
 

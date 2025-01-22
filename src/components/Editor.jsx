@@ -90,6 +90,7 @@ export function Editor({
       <hr />
       <button onClick={toggleCvViewer}>Toggle VC Viewer</button>
       <NavBar
+      className="navBar"
         jumpToIndex={(index) => {
           setEditorIndex(index);
         }}
@@ -102,7 +103,8 @@ function Profile({ profile }) {
   return (
     <div>
       <h2>Profile Infos</h2>
-      <label>
+      <ul>
+        <li><label>
         First Name:{" "}
         <input
           type="text"
@@ -110,8 +112,8 @@ function Profile({ profile }) {
           value={profile.firstName}
           onChange={(e) => profile.setFirstName(e.target.value)}
         />
-      </label>
-      <label>
+      </label></li>
+        <li> <label>
         Last Name:{" "}
         <input
           type="text"
@@ -119,8 +121,8 @@ function Profile({ profile }) {
           value={profile.lastName}
           onChange={(e) => profile.setLastName(e.target.value)}
         />
-      </label>
-      <label>
+      </label></li>
+        <li> <label>
         Job Title:{" "}
         <input
           type="text"
@@ -128,18 +130,25 @@ function Profile({ profile }) {
           value={profile.jobTitle}
           onChange={(e) => profile.setJobTitle(e.target.value)}
         />
-      </label>
-      <label>
+      </label></li>
+        <li> <label>
         Your profile description:{" "}
         <textarea
           maxLength="200"
+          cols="45"
+          rows="5"
+          style={{resize: "none"}}
           value={profile.description}
           onChange={(e) => profile.setDescription(e.target.value)}
         ></textarea>
-      </label>
-      <label>
-        Profile picture: <input type="file" />
-      </label>
+      </label></li>
+    
+      </ul>
+      
+     
+     
+     
+    
     </div>
   );
 }
@@ -148,30 +157,32 @@ function Contact({ contact }) {
   return (
     <div>
       <h2>Contact Infos</h2>
-      <label>
+      <ul>
+        <li><label>
         Email:{" "}
         <input
           type="email"
           value={contact.email}
           onChange={(e) => contact.setEmail(e.target.value)}
         />
-      </label>
-      <label>
+      </label></li>
+        <li> <label>
         Phone:{" "}
         <input
           type="tel"
           value={contact.tel}
           onChange={(e) => contact.setTel(e.target.value)}
         />
-      </label>
-      <label>
+      </label></li>
+        <li> <label>
         Website:{" "}
         <input
           type="text"
           value={contact.website}
           onChange={(e) => contact.setWebsite(e.target.value)}
         />
-      </label>
+      </label></li>
+        <li> 
       <label>
         Address:{" "}
         <input
@@ -179,7 +190,11 @@ function Contact({ contact }) {
           value={contact.address}
           onChange={(e) => contact.setAddress(e.target.value)}
         />
-      </label>
+      </label></li>
+      </ul>
+      
+     
+    
     </div>
   );
 }
@@ -237,41 +252,40 @@ function LargeComponentElement({
   let element;
   if (componentType == "work") {
     element = (
-      <>
-        {" "}
-        <label>
+      <ul>
+        <li>  <label>
           Company Name:{" "}
           <input
             type="text"
             value={values.name}
             onChange={(e) => setValues({ ...values, name: e.target.value })}
           />
-        </label>
-        <label>
+        </label></li>
+        <li><label>
           Job Title:{" "}
           <input
             type="text"
             value={values.title}
             onChange={(e) => setValues({ ...values, title: e.target.value })}
           />
-        </label>
-        <label>
+        </label></li>
+        <li> <label>
           From:{" "}
           <input
             type="number"
             value={values.from}
             onChange={(e) => setValues({ ...values, from: e.target.value })}
           />
-        </label>
-        <label>
+        </label></li>
+        <li>  <label>
           To:{" "}
           <input
             type="number"
             value={values.to}
             onChange={(e) => setValues({ ...values, to: e.target.value })}
           />
-        </label>
-        <ul>
+        </label></li>
+        <li> <ul>
           Main tasks:
           {values.tasks.map((task) => (
             <li key={task.id}>
@@ -315,45 +329,55 @@ function LargeComponentElement({
           >
             Add task
           </button>
-        </ul>{" "}
-      </>
+        </ul>{" "}</li>
+      
+        
+       
+      
+       
+      </ul>
     );
   } else if (componentType == "education") {
     element = (
-      <>
-        <label>
+      <ul>
+        <li> <label>
           Name:{" "}
           <input
             type="text"
             value={values.name}
             onChange={(e) => setValues({ ...values, name: e.target.value })}
           />
-        </label>
-        <label>
+        </label></li>
+        <li>  <label>
           Institute:{" "}
           <input
             type="text"
             value={values.insitute}
             onChange={(e) => setValues({ ...values, insitute: e.target.value })}
           />
-        </label>
-        <label>
+        </label></li>
+        <li>   <label>
           From:{" "}
           <input
             type="num"
             value={values.from}
             onChange={(e) => setValues({ ...values, from: e.target.value })}
           />
-        </label>
-        <label>
+        </label></li>
+        <li>    <label>
           To:{" "}
           <input
             type="num"
             value={values.to}
             onChange={(e) => setValues({ ...values, to: e.target.value })}
           />
-        </label>
-      </>
+        </label></li>
+  
+       
+      
+     
+    
+      </ul>
     );
   }
 
@@ -363,7 +387,7 @@ function LargeComponentElement({
       <button onClick={removeValue}>Delete</button>
       <div style={{ display: show ? "block" : "none" }}>
         <h3>{name}</h3>
-        {element}
+        <ul>{element}</ul>
       </div>
     </li>
   );
@@ -411,7 +435,7 @@ function LargeEditComponent({
           ])
         }
       >
-        Add(not working!)
+        Add
       </button>
     </div>
   );
@@ -423,22 +447,22 @@ function NavBar({ jumpToIndex }) {
       <ul>
         <li>
           {" "}
-          <button onClick={() => jumpToIndex(0)}>Profile</button>{" "}
+          <button onClick={() => jumpToIndex(0)}>0</button>{" "}
         </li>
         <li>
-          <button onClick={() => jumpToIndex(1)}>Contact</button>
+          <button onClick={() => jumpToIndex(1)}>1</button>
         </li>
         <li>
-          <button onClick={() => jumpToIndex(2)}>Working Experience</button>
+          <button onClick={() => jumpToIndex(2)}>2</button>
         </li>
         <li>
-          <button onClick={() => jumpToIndex(3)}>Educations</button>
+          <button onClick={() => jumpToIndex(3)}>3</button>
         </li>
         <li>
-          <button onClick={() => jumpToIndex(4)}>Experise</button>
+          <button onClick={() => jumpToIndex(4)}>4</button>
         </li>
         <li>
-          <button onClick={() => jumpToIndex(5)}>Languages</button>
+          <button onClick={() => jumpToIndex(5)}>5</button>
         </li>
       </ul>
     </nav>
